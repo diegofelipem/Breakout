@@ -8,8 +8,8 @@ public class Paddle {
 
 	private int x = 0;
 	private final int topY;
-	private final int WIDTH = 100;
-	private final int HEIGHT = 10;
+	public final int WIDTH = 100;
+	public final int HEIGHT = 10;
 	private int direction = 0;
 
 	private Board board;
@@ -17,6 +17,7 @@ public class Paddle {
 	public Paddle(Board board) {
 		this.board = board;
 		topY = board.getPreferredSize().height - 50;
+		x = board.getPreferredSize().width / 2 - WIDTH / 2;
 
 	}
 
@@ -49,5 +50,9 @@ public class Paddle {
 
 	public int getTopY() {
 		return topY;
+	}
+
+	public int getX() {
+		return x;
 	}
 }

@@ -21,28 +21,26 @@ public class Board extends JPanel {
 	private final int CANVAS_WIDTH = 400;
 	private final int CANVAS_HEIGHT = 300;
 	private final int UPDATE_INTERVAL = 10;
-
+	
 	private Timer timer;
 	public Ball ball;
 	public Paddle paddle;
-	
-	private boolean isStartGame = false;
-	
-	private JLabel scoreLabel,score;
+
+	private JLabel scoreLabel, score;
 
 	public Board() {
 
-		ball = new Ball(this);
 		paddle = new Paddle(this);
+		ball = new Ball(this);
 
-		setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
+		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
 		scoreLabel = new JLabel("Score: ");
 		scoreLabel.setFont(getFont().deriveFont(12f));
 		score = new JLabel();
 		score.setFont(getFont().deriveFont(12f));
 		this.add(scoreLabel);
 		this.add(score);
-		
+
 		this.addKeyListener(new KeyAdapter() {
 
 			@Override
@@ -81,35 +79,31 @@ public class Board extends JPanel {
 		paddle.move();
 		repaint();
 	}
-	
-	public void gameOver(){
-		isStartGame = false;
+
+	public void gameOver() {
 		JOptionPane.showMessageDialog(this, "Game Over");
 		newGame();
 	}
 
 	public void starGame() {
 		timer.start();
-		isStartGame = true;
 	}
-	
-	public void stop(){
+
+	public void stop() {
 		timer.stop();
 	}
-	
-	public boolean isStartGame(){
-		return isStartGame;
-	}
-	public void newGame(){
+
+	public void newGame() {
 		stop();
-		ball = new Ball(this);
 		paddle = new Paddle(this);
+		ball = new Ball(this);
 		repaint();
 	}
-	
-	public void setSpeed(int speed){
+
+	public void setSpeed(int speed) {
 		ball.setSpeed(speed);
 	}
+
 
 	@Override
 	protected void paintComponent(Graphics g) {

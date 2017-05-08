@@ -12,7 +12,7 @@ import javax.swing.JSlider;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public class Game {
+public class GameMain {
 
 	Board boardGame;
 	JFrame frame;
@@ -78,9 +78,9 @@ public class Game {
 	}
 
 	public JSlider getSpeedSlider() {
-		final int FPS_MIN = 0;
-		final int FPS_MAX = 3;
-		final int FPS_INIT = 0;
+		final int FPS_MIN = 1;
+		final int FPS_MAX = 4;
+		final int FPS_INIT = 1;
 
 		JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
 
@@ -95,7 +95,7 @@ public class Game {
 	public static void main(String[] args) {
 
 		SwingUtilities.invokeLater(() -> {
-			new Game().initGui();
+			new GameMain().initGui();
 		});
 	}
 }

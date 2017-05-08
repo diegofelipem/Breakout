@@ -15,6 +15,8 @@ public class Ball {
 
 	public Ball(Board board) {
 		this.board = board;
+		y = board.paddle.getTopY() - DIAMETER;
+		x = board.getPreferredSize().width / 2 - DIAMETER / 2;
 	}
 
 	public void move() {
@@ -32,6 +34,7 @@ public class Ball {
 		}
 
 		if (collision()) {
+
 			ySpeed = -ySpeed;
 			y = board.paddle.getTopY() - DIAMETER;
 		}
@@ -39,8 +42,8 @@ public class Ball {
 		x += xSpeed;
 		y += ySpeed;
 	}
-	
-	public void setSpeed(int speed){
+
+	public void setSpeed(int speed) {
 		this.xSpeed = speed;
 		this.ySpeed = speed;
 	}
