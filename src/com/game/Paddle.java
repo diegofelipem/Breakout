@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 
-public class Racquet {
+public class Paddle {
 
 	private int x = 0;
 	private final int topY;
@@ -14,7 +14,7 @@ public class Racquet {
 
 	private Board board;
 
-	public Racquet(Board board) {
+	public Paddle(Board board) {
 		this.board = board;
 		topY = board.getPreferredSize().height - 50;
 

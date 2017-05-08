@@ -1,6 +1,5 @@
 package com.game;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -11,8 +10,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -27,14 +24,16 @@ public class Board extends JPanel {
 
 	private Timer timer;
 	public Ball ball;
-	public Racquet racquet;
+	public Paddle paddle;
+	
+	private boolean isStartGame = false;
 	
 	private JLabel scoreLabel,score;
 
 	public Board() {
 
 		ball = new Ball(this);
-		racquet = new Racquet(this);
+		paddle = new Paddle(this);
 
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0,0));
 		scoreLabel = new JLabel("Score: ");
@@ -48,12 +47,12 @@ public class Board extends JPanel {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
-				racquet.keyPressed(e);
+				paddle.keyPressed(e);
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
-				racquet.keyReleased(e);
+				paddle.keyReleased(e);
 			}
 		});
 
@@ -79,24 +78,37 @@ public class Board extends JPanel {
 
 	private void updateBoard() {
 		ball.move();
-		racquet.move();
+		paddle.move();
 		repaint();
 	}
 	
 	public void gameOver(){
+		isStartGame = false;
 		JOptionPane.showMessageDialog(this, "Game Over");
 		newGame();
 	}
 
 	public void starGame() {
 		timer.start();
+		isStartGame = true;
 	}
 	
-	public void newGame(){
+	public void stop(){
 		timer.stop();
+	}
+	
+	public boolean isStartGame(){
+		return isStartGame;
+	}
+	public void newGame(){
+		stop();
 		ball = new Ball(this);
-		racquet = new Racquet(this);
+		paddle = new Paddle(this);
 		repaint();
+	}
+	
+	public void setSpeed(int speed){
+		ball.setSpeed(speed);
 	}
 
 	@Override
@@ -106,6 +118,6 @@ public class Board extends JPanel {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		ball.paint(g2);
-		racquet.paint(g2);
+		paddle.paint(g2);
 	}
 }

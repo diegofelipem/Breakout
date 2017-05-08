@@ -33,11 +33,16 @@ public class Ball {
 
 		if (collision()) {
 			ySpeed = -ySpeed;
-			y = board.racquet.getTopY() - DIAMETER;
+			y = board.paddle.getTopY() - DIAMETER;
 		}
 
 		x += xSpeed;
 		y += ySpeed;
+	}
+	
+	public void setSpeed(int speed){
+		this.xSpeed = speed;
+		this.ySpeed = speed;
 	}
 
 	public void paint(Graphics2D g2) {
@@ -45,7 +50,7 @@ public class Ball {
 	}
 
 	public boolean collision() {
-		return board.racquet.getBounds().intersects(this.getBounds());
+		return board.paddle.getBounds().intersects(this.getBounds());
 	}
 
 	public Rectangle getBounds() {
