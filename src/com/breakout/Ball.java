@@ -1,4 +1,4 @@
-package com.game;
+package com.breakout;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -11,11 +11,14 @@ public class Ball {
 	private int xSpeed = 1;
 	private int ySpeed = 1;
 
-	private Board board;
+	private final Board board;
+	private final Paddle paddle;
+	
 
 	public Ball(Board board) {
 		this.board = board;
-		y = board.paddle.getTopY() - DIAMETER;
+		this.paddle = board.paddle;
+		y = paddle.getTopY() - DIAMETER;
 		x = board.getPreferredSize().width / 2 - DIAMETER / 2;
 	}
 
@@ -34,9 +37,17 @@ public class Ball {
 		}
 
 		if (collision()) {
-
+			
+			float paddleCenter = paddle.getX() + (paddle.WIDTH/2);
+			
+			float relativePos = (this.x + (DIAMETER/2) - paddleCenter) / (paddle.WIDTH/2);
+			
+			if((relativePos > 0 && xSpeed < 0) || (relativePos < 0 && xSpeed > 0)){
+				xSpeed = -xSpeed;
+			}
+			
 			ySpeed = -ySpeed;
-			y = board.paddle.getTopY() - DIAMETER;
+			y = paddle.getTopY() - DIAMETER;
 		}
 
 		x += xSpeed;
@@ -53,7 +64,7 @@ public class Ball {
 	}
 
 	public boolean collision() {
-		return board.paddle.getBounds().intersects(this.getBounds());
+		return paddle.getBounds().intersects(this.getBounds());
 	}
 
 	public Rectangle getBounds() {

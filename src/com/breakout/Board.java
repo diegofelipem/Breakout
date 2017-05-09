@@ -1,4 +1,4 @@
-package com.game;
+package com.breakout;
 
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -20,7 +20,7 @@ public class Board extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private final int CANVAS_WIDTH = 400;
 	private final int CANVAS_HEIGHT = 300;
-	private final int UPDATE_INTERVAL = 10;
+	private final int UPDATE_INTERVAL = 20;
 	
 	private Timer timer;
 	public Ball ball;
@@ -46,6 +46,9 @@ public class Board extends JPanel {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				paddle.keyPressed(e);
+				if (e.getKeyCode() == KeyEvent.VK_SPACE){
+					starGame();
+				}
 			}
 
 			@Override

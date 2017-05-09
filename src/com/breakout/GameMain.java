@@ -1,4 +1,4 @@
-package com.game;
+package com.breakout;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

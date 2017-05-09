@@ -1,4 +1,4 @@
-package com.game;
+package com.breakout;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
