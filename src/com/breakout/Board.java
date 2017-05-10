@@ -1,5 +1,6 @@
 package com.breakout;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -9,7 +10,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Random;
 
+import javax.swing.BorderFactory;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,7 +22,7 @@ import javax.swing.Timer;
 public class Board extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private final int CANVAS_WIDTH = 400;
+	private final int BOARD_WIDTH = 400;
 	private final int CANVAS_HEIGHT = 300;
 	private final int UPDATE_INTERVAL = 20;
 	
@@ -27,6 +31,8 @@ public class Board extends JPanel {
 	public Paddle paddle;
 
 	private JLabel scoreLabel, score;
+	public ArrayList<Brick> wallBricks = new ArrayList<>();
+	
 
 	public Board() {
 
@@ -34,6 +40,7 @@ public class Board extends JPanel {
 		ball = new Ball(this);
 
 		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+		
 		scoreLabel = new JLabel("Score: ");
 		scoreLabel.setFont(getFont().deriveFont(12f));
 		score = new JLabel();
@@ -71,10 +78,21 @@ public class Board extends JPanel {
 		setFocusable(true);
 
 	}
+	
+	public void createWall(Graphics2D g2){
+		//comprimento da tela dividido pelo comprimento do tijolo
+		int maxLineBricks = BOARD_WIDTH / 50;
+		for(int i = 0; i < maxLineBricks; i++){
+			int xPos = i * 50;
+			Brick b = new  Brick(xPos, 0, this);
+			b.paint(g2);
+			wallBricks.add(b);
+		}
+	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(CANVAS_WIDTH, CANVAS_HEIGHT);
+		return new Dimension(BOARD_WIDTH, CANVAS_HEIGHT);
 	}
 
 	private void updateBoard() {
@@ -116,5 +134,6 @@ public class Board extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		ball.paint(g2);
 		paddle.paint(g2);
+		createWall(g2);
 	}
 }
