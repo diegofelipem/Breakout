@@ -24,7 +24,7 @@ public class Ball {
 
 	public void move() {
 
-		if (x >= board.WIDTH - DIAMETER || x <= 0) {
+		if (x >= board.getPreferredSize().width - DIAMETER || x <= 0) {
 			xSpeed = -xSpeed;
 		}
 
