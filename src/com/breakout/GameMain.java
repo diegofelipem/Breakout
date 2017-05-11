@@ -23,7 +23,7 @@ public class GameMain {
 		frame.setJMenuBar(getMenu());
 
 		this.boardGame = new Board();
-		frame.getContentPane().add(boardGame);
+		frame.setContentPane(boardGame);
 		frame.pack();
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);

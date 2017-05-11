@@ -16,13 +16,13 @@ public class Paddle {
 
 	public Paddle(Board board) {
 		this.board = board;
-		topY = board.getPreferredSize().height - 50;
-		x = board.getPreferredSize().width / 2 - WIDTH / 2;
+		topY = board.HEIGHT;
+		x = board.WIDTH / 2 - WIDTH / 2;
 
 	}
 
 	public void move() {
-		if (x + direction > 0 && x + direction < board.getWidth() - WIDTH) {
+		if (x + direction >= 0 && x + direction <= board.WIDTH - WIDTH) {
 			x = x + direction;
 		}
 	}

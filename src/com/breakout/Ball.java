@@ -19,12 +19,12 @@ public class Ball {
 		this.board = board;
 		this.paddle = board.paddle;
 		y = paddle.getTopY() - DIAMETER;
-		x = board.getPreferredSize().width / 2 - DIAMETER / 2;
+		x = board.WIDTH / 2 - DIAMETER / 2;
 	}
 
 	public void move() {
 
-		if (x > board.getWidth() - DIAMETER || x < 0) {
+		if (x >= board.WIDTH - DIAMETER || x <= 0) {
 			xSpeed = -xSpeed;
 		}
 
@@ -32,7 +32,7 @@ public class Ball {
 			ySpeed = -ySpeed;
 		}
 
-		if (y > board.getHeight() - DIAMETER) {
+		if (y + DIAMETER > paddle.getTopY() + paddle.HEIGHT) {
 			board.gameOver();
 		}
 

@@ -1,6 +1,5 @@
 package com.breakout;
 
-import java.awt.BasicStroke;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
@@ -12,6 +11,7 @@ public class Brick {
 	private int x;
 	private int y;
 	private Board board;
+	private boolean isVisible = true;
 	
 	public Brick(int x, int y, Board board) {
 		this.x = x;
@@ -20,14 +20,22 @@ public class Brick {
 	}
 	
 	public void paint(Graphics2D g2) {
-		g2.setStroke(new BasicStroke(3));
-		g2.setColor(board.getBackground());
-		g2.drawRect(x, y, WIDTH, HEIGHT);
-		g2.setColor(board.getForeground());
-		g2.fillRect(x, y, WIDTH, HEIGHT);
+		if(isVisible){
+			g2.setColor(board.getBackground());
+			g2.drawRect(x, y, WIDTH, HEIGHT);
+			g2.setColor(board.getForeground());
+			g2.fillRect(x, y, WIDTH-1, HEIGHT-1);	
+		}else{
+			g2.setColor(board.getBackground());
+			g2.fillRect(x, y, WIDTH, HEIGHT);	
+		}
 	}
 	
 	public Rectangle getBounds() {
 		return new Rectangle(x, y, WIDTH, HEIGHT);
+	}
+	
+	public void hasBroken(){
+		isVisible = false;
 	}
 }
