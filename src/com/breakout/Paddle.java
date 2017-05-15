@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 public class Paddle {
 
 	private int x = 0;
-	private final int topY;
+	private int topY;
 	public final int WIDTH = 100;
 	public final int HEIGHT = 10;
 	private int direction = 0;
@@ -54,5 +54,10 @@ public class Paddle {
 
 	public int getX() {
 		return x;
+	}
+	
+	public void reset(){
+		topY = board.getPreferredSize().height - HEIGHT;
+		x = board.getPreferredSize().width / 2 - WIDTH / 2;
 	}
 }

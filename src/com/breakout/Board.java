@@ -1,7 +1,6 @@
 package com.breakout;
 
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -11,7 +10,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -22,35 +20,28 @@ public class Board extends JPanel {
 	public final int WIDTH = 400;
 	public final int HEIGHT = 300;
 	private final int UPDATE_INTERVAL = 20;
-	
-	private Timer timer;
-	public Ball ball;
-	public Paddle paddle;
 
-	private JLabel scoreLabel, score;
+	private Timer timer;
+	public final Ball ball;
+	public final Paddle paddle;
+	private int totalBricks;
+	private String score = "";
+
 	public ArrayList<Brick> wallBricks = new ArrayList<>();
-	
 
 	public Board() {
 
 		paddle = new Paddle(this);
 		ball = new Ball(this);
 
-		setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-		
-		scoreLabel = new JLabel("Score: ");
-		scoreLabel.setFont(getFont().deriveFont(12f));
-		score = new JLabel();
-		score.setFont(getFont().deriveFont(12f));
-		this.add(scoreLabel);
-		this.add(score);
+		createWallBricks();
 
 		this.addKeyListener(new KeyAdapter() {
 
 			@Override
 			public void keyPressed(KeyEvent e) {
 				paddle.keyPressed(e);
-				if (e.getKeyCode() == KeyEvent.VK_SPACE){
+				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					starGame();
 				}
 			}
@@ -66,6 +57,7 @@ public class Board extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				updateBoard();
+				updateScore();
 				repaint();
 			}
 		};
@@ -73,21 +65,31 @@ public class Board extends JPanel {
 		timer = new Timer(UPDATE_INTERVAL, action);
 
 		setFocusable(true);
-
 	}
-	
-	public void drawBricks(Graphics2D g2, int lines){
 
-		int maxRowBricks = WIDTH / 50;
-		int maxColumnBricks = 4;
+	private void createWallBricks() {
+
+		int maxColumnBricks = WIDTH / 50;
+		int maxRowBricks = 5;
 		
-		for(int r = 0; r < maxRowBricks; r++){
-			for(int c = 0; c < maxColumnBricks; c++){
-				int xPos = r * 50;
-				int yPos = c * 10;
-				Brick b = new  Brick(xPos, yPos, this);
-				b.paint(g2);
+		wallBricks = new ArrayList<>();
+
+		for (int r = 0; r < maxRowBricks; r++) {
+			for (int c = 0; c < maxColumnBricks; c++) {
+				Brick b = new Brick(r, c, this);
 				wallBricks.add(b);
+			}
+		}
+		totalBricks = wallBricks.size();
+	}
+
+	private void drawBricks(Graphics2D g2) {
+
+		if (wallBricks.size() == 0) {
+			endGame();
+		} else {
+			for (Brick b : wallBricks) {
+				b.paint(g2);
 			}
 		}
 	}
@@ -97,13 +99,26 @@ public class Board extends JPanel {
 		return new Dimension(WIDTH, HEIGHT);
 	}
 
+	private void endGame() {
+		stopGame();
+		JOptionPane.showMessageDialog(this, "You Win!");
+		newGame();
+		
+	}
+
 	private void updateBoard() {
 		ball.move();
 		paddle.move();
 		repaint();
 	}
 
+	private void updateScore() {
+		score = String.valueOf((totalBricks - wallBricks.size()) * 100);
+		((GameMain) getTopLevelAncestor()).score.setText(score);
+	}
+
 	public void gameOver() {
+		stopGame();
 		JOptionPane.showMessageDialog(this, "Game Over");
 		newGame();
 	}
@@ -112,21 +127,17 @@ public class Board extends JPanel {
 		timer.start();
 	}
 
-	public void stop() {
+	public void stopGame() {
 		timer.stop();
 	}
 
 	public void newGame() {
-		stop();
-		paddle = new Paddle(this);
-		ball = new Ball(this);
+		stopGame();
+		paddle.reset();
+		ball.reset();
+		createWallBricks();
 		repaint();
 	}
-
-	public void setSpeed(int speed) {
-		ball.setSpeed(speed);
-	}
-
 
 	@Override
 	protected void paintComponent(Graphics g) {
@@ -136,6 +147,6 @@ public class Board extends JPanel {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		ball.paint(g2);
 		paddle.paint(g2);
-		//drawBricks(g2, 4);
+		drawBricks(g2);
 	}
 }

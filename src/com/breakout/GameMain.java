@@ -1,34 +1,49 @@
 package com.breakout;
 
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
-import javax.swing.JSlider;
+import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public class GameMain {
+public class GameMain extends JFrame{
 
+	private static final long serialVersionUID = 1L;
 	Board boardGame;
-	JFrame frame;
+	JPanel scorePanel;
+	JLabel scoreLabel;
+	public final JLabel score = new JLabel("0");
 
 	public void initGui() {
-		frame = new JFrame("Tennis Game");
 
-		frame.setJMenuBar(getMenu());
+		setTitle("Breakout Game");
+		setJMenuBar(getMenu());
+
+		this.scorePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
+
+		scoreLabel = new JLabel("Score: ");
+		scorePanel.add(scoreLabel);
+		scorePanel.add(score);
 
 		this.boardGame = new Board();
-		frame.setContentPane(boardGame);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLocationRelativeTo(null);
-		frame.setResizable(false);
-		frame.pack();
-		frame.setVisible(true);
+
+		getContentPane().add(scorePanel, BorderLayout.NORTH);
+		getContentPane().add(boardGame, BorderLayout.CENTER);
+
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setResizable(false);
+		pack();
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 
 	public JMenuBar getMenu() {
@@ -48,48 +63,10 @@ public class GameMain {
 			}
 		});
 
-		JMenuItem startGame = new JMenuItem("Start...");
-		startGame.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
-		startGame.addActionListener(e -> {
-			boardGame.starGame();
-		});
-
 		menu.add(newGame);
-		menu.add(startGame);
-
-		JMenu menu2 = new JMenu("Options");
-
-		JMenuItem speedBall = new JMenuItem("Set Speed...");
-		speedBall.addActionListener(e -> {
-
-			JSlider sl = getSpeedSlider();
-			JOptionPane.showConfirmDialog(null, sl, "Select a speed", JOptionPane.DEFAULT_OPTION,
-					JOptionPane.PLAIN_MESSAGE);
-			boardGame.setSpeed(sl.getValue());
-
-		});
-
-		menu2.add(speedBall);
-
 		bar.add(menu);
-		bar.add(menu2);
 
 		return bar;
-	}
-
-	public JSlider getSpeedSlider() {
-		final int FPS_MIN = 1;
-		final int FPS_MAX = 4;
-		final int FPS_INIT = 1;
-
-		JSlider speedSlider = new JSlider(JSlider.HORIZONTAL, FPS_MIN, FPS_MAX, FPS_INIT);
-
-		speedSlider.setMajorTickSpacing(3);
-		speedSlider.setMinorTickSpacing(1);
-		speedSlider.setPaintTicks(true);
-		speedSlider.setPaintLabels(true);
-
-		return speedSlider;
 	}
 
 	public static void main(String[] args) {

@@ -11,23 +11,20 @@ public class Brick {
 	private int x;
 	private int y;
 	private Board board;
-	private boolean isVisible = true;
+	private boolean broken = false;
 	
-	public Brick(int x, int y, Board board) {
-		this.x = x;
-		this.y  = y + 15;
+	public Brick(int row, int column, Board board) {
 		this.board = board;
+		this.x = column * WIDTH;
+		this.y  = row * HEIGHT;
 	}
 	
 	public void paint(Graphics2D g2) {
-		if(isVisible){
+		if(!hasBroken()){
 			g2.setColor(board.getBackground());
 			g2.drawRect(x, y, WIDTH, HEIGHT);
 			g2.setColor(board.getForeground());
-			g2.fillRect(x, y, WIDTH-1, HEIGHT-1);	
-		}else{
-			g2.setColor(board.getBackground());
-			g2.fillRect(x, y, WIDTH, HEIGHT);	
+			g2.fillRect(x, y, WIDTH-2, HEIGHT-2);
 		}
 	}
 	
@@ -35,7 +32,15 @@ public class Brick {
 		return new Rectangle(x, y, WIDTH, HEIGHT);
 	}
 	
-	public void hasBroken(){
-		isVisible = false;
+	public boolean hasBroken(){
+		return broken;
+	}
+	
+	public void setState(boolean broken){
+		this.broken = broken;
+	}
+
+	public int getX() {
+		return x;
 	}
 }
