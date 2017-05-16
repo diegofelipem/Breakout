@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -17,17 +18,18 @@ import javax.swing.Timer;
 public class Board extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	public final int WIDTH = 400;
+	public final int WIDTH = 450;
 	public final int HEIGHT = 300;
-	private final int UPDATE_INTERVAL = 20;
+	private final int UPDATE_INTERVAL = 10;
 
 	private Timer timer;
 	public final Ball ball;
 	public final Paddle paddle;
-	private int totalBricks;
-	private String score = "";
+	public int bricksBroken = 0;
+	private int score = 0;
+	private int level = 1;
 
-	public ArrayList<Brick> wallBricks = new ArrayList<>();
+	public ArrayList<Brick> wallBricks = new ArrayList<Brick>();
 
 	public Board() {
 
@@ -57,7 +59,6 @@ public class Board extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				updateBoard();
-				updateScore();
 				repaint();
 			}
 		};
@@ -69,10 +70,13 @@ public class Board extends JPanel {
 
 	private void createWallBricks() {
 
-		int maxColumnBricks = WIDTH / 50;
-		int maxRowBricks = 5;
-		
+		int maxColumnBricks = (int) (WIDTH / 50);
+		int maxRowBricks = 3;
+
 		wallBricks = new ArrayList<>();
+
+		maxRowBricks += level / 2;
+		maxColumnBricks = 1;
 
 		for (int r = 0; r < maxRowBricks; r++) {
 			for (int c = 0; c < maxColumnBricks; c++) {
@@ -80,15 +84,16 @@ public class Board extends JPanel {
 				wallBricks.add(b);
 			}
 		}
-		totalBricks = wallBricks.size();
 	}
 
 	private void drawBricks(Graphics2D g2) {
 
-		if (wallBricks.size() == 0) {
-			endGame();
-		} else {
-			for (Brick b : wallBricks) {
+		for (Iterator<Brick> it = wallBricks.iterator(); it.hasNext();) {
+			Brick b = it.next();
+			if (b.hasBroken()) {
+				it.remove();
+				bricksBroken++;
+			} else {
 				b.paint(g2);
 			}
 		}
@@ -99,22 +104,33 @@ public class Board extends JPanel {
 		return new Dimension(WIDTH, HEIGHT);
 	}
 
-	private void endGame() {
+	public void nextLevel() {
 		stopGame();
-		JOptionPane.showMessageDialog(this, "You Win!");
-		newGame();
-		
+		JOptionPane.showMessageDialog(this, "Level " + level + " wins!");
+		level++;
+		paddle.reset();
+		ball.reset();
+		ball.increaseSpeed(level);
+		createWallBricks();
+		updateLevel();
+		repaint();
+	}
+
+	private void updateLevel() {
+		((GameMain) getTopLevelAncestor()).level.setText(String.valueOf(level));
 	}
 
 	private void updateBoard() {
 		ball.move();
 		paddle.move();
+		updateScore();
+		updateLevel();
 		repaint();
 	}
 
 	private void updateScore() {
-		score = String.valueOf((totalBricks - wallBricks.size()) * 100);
-		((GameMain) getTopLevelAncestor()).score.setText(score);
+		score = bricksBroken * 10;
+		((GameMain) getTopLevelAncestor()).score.setText(String.valueOf(score));
 	}
 
 	public void gameOver() {
@@ -133,9 +149,13 @@ public class Board extends JPanel {
 
 	public void newGame() {
 		stopGame();
+		level = 1;
+		score = 0;
+		bricksBroken = 0;
 		paddle.reset();
 		ball.reset();
 		createWallBricks();
+		updateBoard();
 		repaint();
 	}
 

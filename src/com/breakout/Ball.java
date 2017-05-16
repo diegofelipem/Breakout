@@ -23,6 +23,10 @@ public class Ball {
 
 	public void move() {
 
+		if (board.wallBricks.isEmpty()) {
+			board.nextLevel();
+		}
+
 		if (x > board.getPreferredSize().width - DIAMETER || x < 0) {
 			xSpeed = -xSpeed;
 
@@ -47,7 +51,7 @@ public class Ball {
 
 		for (Brick brick : board.wallBricks) {
 
-			if (brickCollision(brick) && !brick.hasBroken()) {
+			if (brickCollision(brick)) {
 
 				float brickCenter = brick.getX() + (brick.WIDTH / 2);
 				float brickRelativePos = (this.x + (DIAMETER / 2) - brickCenter) / (brick.WIDTH / 2);
@@ -57,7 +61,6 @@ public class Ball {
 				}
 
 				brick.setState(true);
-				board.wallBricks.remove(brick);
 				ySpeed = -ySpeed;
 				break;
 			}
@@ -71,9 +74,10 @@ public class Ball {
 		g2.fillOval(x, y, DIAMETER, DIAMETER);
 	}
 
-	public void increaseSpeed() {
-		xSpeed = Math.abs(xSpeed) + 1;
-		ySpeed = Math.abs(ySpeed) + 1;
+	public void increaseSpeed(int speed) {
+		xSpeed = ySpeed = speed;
+		// xSpeed = Math.abs(xSpeed) + speed;
+		// ySpeed = Math.abs(ySpeed) + speed;
 	}
 
 	public boolean paddleCollision() {
@@ -91,5 +95,6 @@ public class Ball {
 	public void reset() {
 		x = board.WIDTH / 2 - DIAMETER / 2;
 		y = paddle.getTopY() - DIAMETER;
+		xSpeed = ySpeed = 1;
 	}
 }

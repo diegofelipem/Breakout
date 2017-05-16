@@ -1,10 +1,12 @@
 package com.breakout;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -19,24 +21,32 @@ public class GameMain extends JFrame{
 
 	private static final long serialVersionUID = 1L;
 	Board boardGame;
-	JPanel scorePanel;
-	JLabel scoreLabel;
+	JPanel infoPanel;
+	JLabel scoreLabel, levelLabel;
 	public final JLabel score = new JLabel("0");
+	public final JLabel level = new JLabel("1");
 
 	public void initGui() {
 
 		setTitle("Breakout Game");
 		setJMenuBar(getMenu());
 
-		this.scorePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
+		this.infoPanel = new JPanel();
+		infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.X_AXIS));
+		infoPanel.setBorder(BorderFactory.createEmptyBorder(1, 2, 1, 2));
 
 		scoreLabel = new JLabel("Score: ");
-		scorePanel.add(scoreLabel);
-		scorePanel.add(score);
+		levelLabel = new JLabel("Level ");
+		
+		infoPanel.add(scoreLabel);
+		infoPanel.add(score);
+		infoPanel.add(Box.createGlue());
+		infoPanel.add(levelLabel);
+		infoPanel.add(level);
 
 		this.boardGame = new Board();
 
-		getContentPane().add(scorePanel, BorderLayout.NORTH);
+		getContentPane().add(infoPanel, BorderLayout.NORTH);
 		getContentPane().add(boardGame, BorderLayout.CENTER);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
