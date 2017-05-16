@@ -76,7 +76,6 @@ public class Board extends JPanel {
 		wallBricks = new ArrayList<>();
 
 		maxRowBricks += level / 2;
-		maxColumnBricks = 1;
 
 		for (int r = 0; r < maxRowBricks; r++) {
 			for (int c = 0; c < maxColumnBricks; c++) {
