@@ -3,6 +3,8 @@ package com.breakout;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,7 +19,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 
-public class GameMain extends JFrame{
+public class GameMain extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	Board boardGame;
@@ -25,6 +27,22 @@ public class GameMain extends JFrame{
 	JLabel scoreLabel, levelLabel;
 	public final JLabel score = new JLabel("0");
 	public final JLabel level = new JLabel("1");
+
+	public GameMain() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				boardGame.stopGame();
+				super.windowDeactivated(e);
+			}
+
+			@Override
+			public void windowActivated(WindowEvent e) {
+				boardGame.starGame();
+				super.windowActivated(e);
+			}
+		});
+	}
 
 	public void initGui() {
 
@@ -37,7 +55,7 @@ public class GameMain extends JFrame{
 
 		scoreLabel = new JLabel("Score: ");
 		levelLabel = new JLabel("Level ");
-		
+
 		infoPanel.add(scoreLabel);
 		infoPanel.add(score);
 		infoPanel.add(Box.createGlue());

@@ -1,6 +1,8 @@
 package com.breakout;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -26,23 +28,23 @@ public class SoundManager {
 
 				switch (sound) {
 				case BALL_POING:
-					audioPath = "res/ball_poing.wav";
+					audioPath = "ball_poing.wav";
 					break;
 				case BRICK_CRASH:
-					audioPath = "res/brick_crash.wav";
+					audioPath = "brick_crash.wav";
 					break;
 				case LEVEL_UP:
-					audioPath = "res/level_up.wav";
+					audioPath = "level_up.wav";
 					break;
 				case GAME_OVER:
-					audioPath = "res/game_over.wav";
+					audioPath = "game_over.wav";
 					break;
 				default:
 					throw new IllegalArgumentException("Invalid sound.");
 				}
-
-				AudioInputStream inputStream = AudioSystem
-						.getAudioInputStream(GameMain.class.getResourceAsStream(audioPath));
+				InputStream audioSrc = new BufferedInputStream(
+						GameMain.class.getResourceAsStream("/com/breakout/res/" + audioPath));
+				AudioInputStream inputStream = AudioSystem.getAudioInputStream(audioSrc);
 				clip.open(inputStream);
 				clip.start();
 			} catch (LineUnavailableException | IOException | UnsupportedAudioFileException e) {
