@@ -29,9 +29,10 @@ public class Ball {
 
 		if (x > board.getPreferredSize().width - DIAMETER || x < 0) {
 			xSpeed = -xSpeed;
-
+			SoundManager.playSound(SoundManager.BALL_POING);
 		} else if (y < 0) {
 			ySpeed = -ySpeed;
+			SoundManager.playSound(SoundManager.BALL_POING);
 
 		} else if (y + DIAMETER > paddle.getTopY() + paddle.HEIGHT) {
 			board.gameOver();
@@ -47,6 +48,7 @@ public class Ball {
 
 			ySpeed = -ySpeed;
 			y = paddle.getTopY() - DIAMETER;
+			SoundManager.playSound(SoundManager.BALL_POING);
 		}
 
 		for (Brick brick : board.wallBricks) {
@@ -62,6 +64,7 @@ public class Ball {
 
 				brick.setState(true);
 				ySpeed = -ySpeed;
+				SoundManager.playSound(SoundManager.BRICK_CRASH);
 				break;
 			}
 		}

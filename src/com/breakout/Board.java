@@ -72,7 +72,6 @@ public class Board extends JPanel {
 
 		int maxColumnBricks = (int) (WIDTH / 50);
 		int maxRowBricks = 3;
-
 		wallBricks = new ArrayList<>();
 
 		maxRowBricks += level / 2;
@@ -105,6 +104,7 @@ public class Board extends JPanel {
 
 	public void nextLevel() {
 		stopGame();
+		SoundManager.playSound(SoundManager.LEVEL_UP);
 		JOptionPane.showMessageDialog(this, "Level " + level + " wins!");
 		level++;
 		paddle.reset();
@@ -134,6 +134,7 @@ public class Board extends JPanel {
 
 	public void gameOver() {
 		stopGame();
+		SoundManager.playSound(SoundManager.GAME_OVER);
 		JOptionPane.showMessageDialog(this, "Game Over");
 		newGame();
 	}
