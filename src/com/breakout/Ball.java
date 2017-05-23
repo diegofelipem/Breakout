@@ -46,6 +46,16 @@ public class Ball {
 				xSpeed = -xSpeed;
 			}
 
+//			if (paddle.isMoving()) {
+//				int moveShift = 0;
+//				if (xSpeed > 0) {
+//					moveShift = (int) Math.ceil(paddle.getDirection());
+//				} else if (xSpeed < 0) {
+//					moveShift = (int) Math.ceil(paddle.getDirection()) * (-1);
+//				}
+//				x += moveShift;
+//			}
+
 			ySpeed = -ySpeed;
 			y = paddle.getTopY() - DIAMETER;
 			SoundManager.playSound(SoundManager.BALL_POING);
@@ -77,10 +87,8 @@ public class Ball {
 		g2.fillOval(x, y, DIAMETER, DIAMETER);
 	}
 
-	public void increaseSpeed(int speed) {
+	public void changeSpeed(int speed) {
 		xSpeed = ySpeed = speed;
-		// xSpeed = Math.abs(xSpeed) + speed;
-		// ySpeed = Math.abs(ySpeed) + speed;
 	}
 
 	public boolean paddleCollision() {

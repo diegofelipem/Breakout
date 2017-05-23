@@ -30,16 +30,15 @@ public class GameMain extends JFrame {
 
 	public GameMain() {
 		addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowDeactivated(WindowEvent e) {
-				boardGame.stopGame();
-				super.windowDeactivated(e);
-			}
 
 			@Override
-			public void windowActivated(WindowEvent e) {
-				boardGame.starGame();
-				super.windowActivated(e);
+			public void windowDeactivated(WindowEvent e) {
+				if (boardGame.gameIsRunning()) {
+					setAlwaysOnTop(true);
+				}else{
+					setAlwaysOnTop(false);
+				}
+				super.windowDeactivated(e);
 			}
 		});
 	}

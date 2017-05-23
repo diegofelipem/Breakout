@@ -58,13 +58,12 @@ public class Board extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				updateBoard();
-				repaint();
+					updateBoard();
+					repaint();
 			}
 		};
 
 		timer = new Timer(UPDATE_INTERVAL, action);
-
 		setFocusable(true);
 	}
 
@@ -101,6 +100,10 @@ public class Board extends JPanel {
 	public Dimension getPreferredSize() {
 		return new Dimension(WIDTH, HEIGHT);
 	}
+	
+	public boolean gameIsRunning(){
+		return timer.isRunning();
+	}
 
 	public void nextLevel() {
 		stopGame();
@@ -109,7 +112,7 @@ public class Board extends JPanel {
 		level++;
 		paddle.reset();
 		ball.reset();
-		ball.increaseSpeed(level);
+		ball.changeSpeed(level);
 		createWallBricks();
 		updateLevel();
 		repaint();
@@ -124,7 +127,6 @@ public class Board extends JPanel {
 		paddle.move();
 		updateScore();
 		updateLevel();
-		repaint();
 	}
 
 	private void updateScore() {
@@ -140,7 +142,7 @@ public class Board extends JPanel {
 	}
 
 	public void starGame() {
-		timer.start();
+		timer.start();		
 	}
 
 	public void stopGame() {

@@ -40,6 +40,14 @@ public class Paddle {
 		}
 	}
 
+	public boolean isMoving() {
+		return direction != 0;
+	}
+
+	public int getDirection() {
+		return direction;
+	}
+
 	public void keyReleased(KeyEvent e) {
 		direction = 0;
 	}
@@ -55,8 +63,8 @@ public class Paddle {
 	public int getX() {
 		return x;
 	}
-	
-	public void reset(){
+
+	public void reset() {
 		topY = board.getPreferredSize().height - HEIGHT;
 		x = board.getPreferredSize().width / 2 - WIDTH / 2;
 	}
